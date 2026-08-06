@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as AdminLoginRouteImport } from './routes/admin-login'
+import { Route as ClaimRouteImport } from './routes/claim'
 import { Route as TrackRouteImport } from './routes/track'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AdminAgentsRouteImport } from './routes/admin/agents'
@@ -31,6 +32,11 @@ const AdminRouteRoute = AdminRouteRouteImport.update({
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/admin-login',
   path: '/admin-login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClaimRoute = ClaimRouteImport.update({
+  id: '/claim',
+  path: '/claim',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TrackRoute = TrackRouteImport.update({
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/admin-login': typeof AdminLoginRoute
+  '/claim': typeof ClaimRoute
   '/track': typeof TrackRoute
   '/admin/agents': typeof AdminAgentsRoute
   '/admin/': typeof AdminIndexRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin-login': typeof AdminLoginRoute
+  '/claim': typeof ClaimRoute
   '/track': typeof TrackRoute
   '/admin/agents': typeof AdminAgentsRoute
   '/admin': typeof AdminIndexRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/admin-login': typeof AdminLoginRoute
+  '/claim': typeof ClaimRoute
   '/track': typeof TrackRoute
   '/admin/agents': typeof AdminAgentsRoute
   '/admin/': typeof AdminIndexRoute
@@ -95,6 +104,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/admin-login'
+    | '/claim'
     | '/track'
     | '/admin/agents'
     | '/admin/'
@@ -104,6 +114,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin-login'
+    | '/claim'
     | '/track'
     | '/admin/agents'
     | '/admin'
@@ -114,6 +125,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/admin-login'
+    | '/claim'
     | '/track'
     | '/admin/agents'
     | '/admin/'
@@ -125,6 +137,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
+  ClaimRoute: typeof ClaimRoute
   TrackRoute: typeof TrackRoute
 }
 
@@ -149,6 +162,13 @@ declare module '@tanstack/react-router' {
       path: '/admin-login'
       fullPath: '/admin-login'
       preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/claim': {
+      id: '/claim'
+      path: '/claim'
+      fullPath: '/claim'
+      preLoaderRoute: typeof ClaimRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/track': {
@@ -211,8 +231,19 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
+  ClaimRoute: ClaimRoute,
   TrackRoute: TrackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
