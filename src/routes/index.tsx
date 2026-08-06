@@ -40,7 +40,9 @@ function Index() {
       <Nav />
       <main>
         <Hero />
+        <IssueCarousel />
         <CategoryTiles />
+
         <ReportedIssues />
         <CtaBand onReport={() => setModalOpen(true)} />
         <ArticlesContact />
