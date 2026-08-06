@@ -1,7 +1,13 @@
 import { MenuIcon } from "./icons";
 import logoAsset from "@/assets/logo-onthebeach.png.asset.json";
 
-const tabs = ["Help Centre", "Report an Issue", "Manage Claim", "Refund Status", "Contact Us"];
+const tabs: { label: string; href: string }[] = [
+  { label: "Help Centre", href: "/" },
+  { label: "Report an Issue", href: "/claim" },
+  { label: "Manage Claim", href: "/claim" },
+  { label: "Refund Status", href: "/track" },
+  { label: "Contact Us", href: "mailto:careonthebeach@gmail.com" },
+];
 
 export function Nav() {
   return (
