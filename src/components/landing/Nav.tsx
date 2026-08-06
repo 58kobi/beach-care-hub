@@ -44,7 +44,7 @@ export function Nav() {
         </div>
       </div>
       <div className="border-b border-line">
-        <div className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 sm:px-6">
+        <div className="flex w-full gap-1 overflow-x-auto px-3 sm:px-4">
           {tabs.map((tab, i) => (
             <a
               key={tab}
