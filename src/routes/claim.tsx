@@ -144,7 +144,7 @@ function ReportPanel() {
       <form className="mt-6 space-y-4" onSubmit={onSubmit}>
         <label className="block text-xs font-semibold text-ink">
           Full name
-          <input name="full_name" required placeholder="Jane Doe" className={fieldClass} />
+          <input name="full_name" required className={fieldClass} />
         </label>
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="block text-xs font-semibold text-ink">
@@ -153,7 +153,6 @@ function ReportPanel() {
               name="email"
               type="email"
               required
-              placeholder="you@example.com"
               className={fieldClass}
             />
           </label>
@@ -162,7 +161,6 @@ function ReportPanel() {
             <input
               name="phone"
               type="tel"
-              placeholder="+44 7000 000000"
               className={fieldClass}
             />
           </label>
@@ -185,7 +183,6 @@ function ReportPanel() {
           <input
             name="location"
             required
-            placeholder="e.g. Diani Beach, Kenya"
             className={fieldClass}
           />
         </label>
@@ -195,7 +192,6 @@ function ReportPanel() {
             name="description"
             required
             rows={5}
-            placeholder="Tell us what happened…"
             className={`resize-none ${fieldClass}`}
           />
         </label>
@@ -258,7 +254,7 @@ function TrackPanel() {
       <form className="mt-6 space-y-4" onSubmit={onSubmit}>
         <label className="block text-xs font-semibold text-ink">
           Claim reference
-          <input name="reference" required placeholder="OTB-26-XXXXXX" className={fieldClass} />
+          <input name="reference" required className={fieldClass} />
         </label>
         <label className="block text-xs font-semibold text-ink">
           Email address
