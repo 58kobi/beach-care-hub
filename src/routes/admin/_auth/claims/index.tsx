@@ -40,15 +40,8 @@ async function loadClaims() {
   return (data ?? []) as ClaimRow[];
 }
 
-async function loadAgents() {
-  const { data, error } = await supabase
-    .from("agents")
-    .select("id, name")
-    .eq("active", true)
-    .order("name");
-  if (error) throw error;
-  return data ?? [];
-}
+
+
 
 export function StatusBadge({ status }: { status: ClaimStatus }) {
   return (
