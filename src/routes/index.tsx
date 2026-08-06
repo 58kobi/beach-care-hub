@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Nav } from "@/components/landing/Nav";
 import { Hero } from "@/components/landing/Hero";
+import { IssueCarousel } from "@/components/landing/IssueCarousel";
 import { CategoryTiles } from "@/components/landing/CategoryTiles";
 import { ReportedIssues } from "@/components/landing/ReportedIssues";
 import { CtaBand } from "@/components/landing/CtaBand";
@@ -39,7 +40,9 @@ function Index() {
       <Nav />
       <main>
         <Hero />
+        <IssueCarousel />
         <CategoryTiles />
+
         <ReportedIssues />
         <CtaBand onReport={() => setModalOpen(true)} />
         <ArticlesContact />
