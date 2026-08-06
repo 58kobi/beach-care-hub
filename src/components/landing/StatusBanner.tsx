@@ -1,3 +1,5 @@
+import { Link } from "@tanstack/react-router";
+
 export function StatusBanner() {
   return (
     <section className="px-4 pb-16 sm:px-6">
@@ -11,9 +13,9 @@ export function StatusBanner() {
             <p className="mt-0.5 text-xs text-ink-soft">No known issues · Last updated today, 09:30</p>
           </div>
         </div>
-        <a href="#" className="shrink-0 text-sm font-semibold text-green hover:underline">
+        <Link to="/status" className="shrink-0 text-sm font-semibold text-green hover:underline">
           View status page →
-        </a>
+        </Link>
       </div>
     </section>
   );
