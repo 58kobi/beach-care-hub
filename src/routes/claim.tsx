@@ -258,13 +258,7 @@ function TrackPanel() {
         </label>
         <label className="block text-xs font-semibold text-ink">
           Email address
-          <input
-            name="email"
-            type="email"
-            required
-            placeholder="you@example.com"
-            className={fieldClass}
-          />
+          <input name="email" type="email" required className={fieldClass} />
         </label>
         <button
           type="submit"
