@@ -53,8 +53,8 @@ export function Nav() {
         <div className="flex w-full gap-1 overflow-x-auto px-3 sm:px-4">
           {tabs.map((tab, i) => (
             <a
-              key={tab}
-              href="#"
+              key={tab.label}
+              href={tab.href}
               className={
                 "whitespace-nowrap px-3 py-3 text-sm font-medium " +
                 (i === 0
@@ -62,7 +62,7 @@ export function Nav() {
                   : "border-b-2 border-transparent text-ink-soft hover:text-navy")
               }
             >
-              {tab}
+              {tab.label}
             </a>
           ))}
         </div>
