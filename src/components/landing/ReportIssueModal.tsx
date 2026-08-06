@@ -18,19 +18,30 @@ export function ReportIssueModal({ open, onClose }: { open: boolean; onClose: ()
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
+    const payload = {
+      full_name: String(form.get("full_name") ?? "").trim(),
+      email: String(form.get("email") ?? "").trim(),
+      phone: String(form.get("phone") ?? "").trim(),
+      issue_type: String(form.get("issue_type") ?? "other") as (typeof ISSUE_TYPES)[number],
+      location: String(form.get("location") ?? "").trim(),
+      description: String(form.get("description") ?? "").trim(),
+    };
+    if (payload.full_name.length < 2) {
+      setError("Please enter your full name.");
+      return;
+    }
+    if (payload.location.length < 2) {
+      setError("Please tell us the beach or location.");
+      return;
+    }
+    if (payload.description.length < 10) {
+      setError("Please describe what happened in at least 10 characters.");
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
-      const res = await send({
-        data: {
-          full_name: String(form.get("full_name") ?? ""),
-          email: String(form.get("email") ?? ""),
-          phone: String(form.get("phone") ?? ""),
-          issue_type: String(form.get("issue_type") ?? "other") as (typeof ISSUE_TYPES)[number],
-          location: String(form.get("location") ?? ""),
-          description: String(form.get("description") ?? ""),
-        },
-      });
+      const res = await send({ data: payload });
       setReference(res.reference);
     } catch {
       setError("We couldn't submit your report. Please check the details and try again.");
@@ -38,6 +49,7 @@ export function ReportIssueModal({ open, onClose }: { open: boolean; onClose: ()
       setLoading(false);
     }
   }
+
 
   return (
     <div
@@ -140,7 +152,7 @@ export function ReportIssueModal({ open, onClose }: { open: boolean; onClose: ()
                 Description
                 <textarea
                   name="description"
-                  required
+                  required minLength={10}
                   rows={4}
                   placeholder="Tell us what happened…"
                   className={`mt-1.5 resize-none font-normal ${fieldClass}`}
