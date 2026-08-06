@@ -95,7 +95,6 @@ export function ReportIssueModal({ open, onClose }: { open: boolean; onClose: ()
                   name="full_name"
                   type="text"
                   required
-                  placeholder="Jane Doe"
                   className={`mt-1.5 font-normal ${fieldClass}`}
                 />
               </label>
@@ -106,7 +105,6 @@ export function ReportIssueModal({ open, onClose }: { open: boolean; onClose: ()
                     name="email"
                     type="email"
                     required
-                    placeholder="you@email.com"
                     className={`mt-1.5 font-normal ${fieldClass}`}
                   />
                 </label>
@@ -115,7 +113,6 @@ export function ReportIssueModal({ open, onClose }: { open: boolean; onClose: ()
                   <input
                     name="phone"
                     type="tel"
-                    placeholder="+44 7000 000000"
                     className={`mt-1.5 font-normal ${fieldClass}`}
                   />
                 </label>
@@ -144,7 +141,6 @@ export function ReportIssueModal({ open, onClose }: { open: boolean; onClose: ()
                   name="location"
                   type="text"
                   required
-                  placeholder="e.g. Diani Beach, Kenya"
                   className={`mt-1.5 font-normal ${fieldClass}`}
                 />
               </label>
@@ -154,7 +150,6 @@ export function ReportIssueModal({ open, onClose }: { open: boolean; onClose: ()
                   name="description"
                   required minLength={10}
                   rows={4}
-                  placeholder="Tell us what happened…"
                   className={`mt-1.5 resize-none font-normal ${fieldClass}`}
                 />
               </label>
