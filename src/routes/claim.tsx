@@ -202,7 +202,7 @@ function ReportPanel() {
           Description
           <textarea
             name="description"
-            required
+            required minLength={10}
             rows={5}
             className={`resize-none ${fieldClass}`}
           />

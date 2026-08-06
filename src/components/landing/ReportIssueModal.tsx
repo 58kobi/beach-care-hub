@@ -152,7 +152,7 @@ export function ReportIssueModal({ open, onClose }: { open: boolean; onClose: ()
                 Description
                 <textarea
                   name="description"
-                  required
+                  required minLength={10}
                   rows={4}
                   placeholder="Tell us what happened…"
                   className={`mt-1.5 resize-none font-normal ${fieldClass}`}
