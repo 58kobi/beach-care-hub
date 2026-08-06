@@ -10,9 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as AdminLoginRouteImport } from './routes/admin-login'
 import { Route as ClaimRouteImport } from './routes/claim'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as StatusRouteImport } from './routes/status'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TrackRouteImport } from './routes/track'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AdminAgentsRouteImport } from './routes/admin/agents'
@@ -22,6 +27,11 @@ import { Route as AdminClaimsIdRouteImport } from './routes/admin/claims/$id'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRouteRoute = AdminRouteRouteImport.update({
@@ -37,6 +47,26 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
 const ClaimRoute = ClaimRouteImport.update({
   id: '/claim',
   path: '/claim',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StatusRoute = StatusRouteImport.update({
+  id: '/status',
+  path: '/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TrackRoute = TrackRouteImport.update({
@@ -68,8 +98,13 @@ const AdminClaimsIdRoute = AdminClaimsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
+  '/about': typeof AboutRoute
   '/admin-login': typeof AdminLoginRoute
   '/claim': typeof ClaimRoute
+  '/contact': typeof ContactRoute
+  '/privacy': typeof PrivacyRoute
+  '/status': typeof StatusRoute
+  '/terms': typeof TermsRoute
   '/track': typeof TrackRoute
   '/admin/agents': typeof AdminAgentsRoute
   '/admin/': typeof AdminIndexRoute
@@ -78,8 +113,13 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/admin-login': typeof AdminLoginRoute
   '/claim': typeof ClaimRoute
+  '/contact': typeof ContactRoute
+  '/privacy': typeof PrivacyRoute
+  '/status': typeof StatusRoute
+  '/terms': typeof TermsRoute
   '/track': typeof TrackRoute
   '/admin/agents': typeof AdminAgentsRoute
   '/admin': typeof AdminIndexRoute
@@ -90,8 +130,13 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
+  '/about': typeof AboutRoute
   '/admin-login': typeof AdminLoginRoute
   '/claim': typeof ClaimRoute
+  '/contact': typeof ContactRoute
+  '/privacy': typeof PrivacyRoute
+  '/status': typeof StatusRoute
+  '/terms': typeof TermsRoute
   '/track': typeof TrackRoute
   '/admin/agents': typeof AdminAgentsRoute
   '/admin/': typeof AdminIndexRoute
@@ -103,8 +148,13 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/about'
     | '/admin-login'
     | '/claim'
+    | '/contact'
+    | '/privacy'
+    | '/status'
+    | '/terms'
     | '/track'
     | '/admin/agents'
     | '/admin/'
@@ -113,8 +163,13 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/admin-login'
     | '/claim'
+    | '/contact'
+    | '/privacy'
+    | '/status'
+    | '/terms'
     | '/track'
     | '/admin/agents'
     | '/admin'
@@ -124,8 +179,13 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
+    | '/about'
     | '/admin-login'
     | '/claim'
+    | '/contact'
+    | '/privacy'
+    | '/status'
+    | '/terms'
     | '/track'
     | '/admin/agents'
     | '/admin/'
@@ -136,8 +196,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
+  AboutRoute: typeof AboutRoute
   AdminLoginRoute: typeof AdminLoginRoute
   ClaimRoute: typeof ClaimRoute
+  ContactRoute: typeof ContactRoute
+  PrivacyRoute: typeof PrivacyRoute
+  StatusRoute: typeof StatusRoute
+  TermsRoute: typeof TermsRoute
   TrackRoute: typeof TrackRoute
 }
 
@@ -148,6 +213,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -169,6 +241,34 @@ declare module '@tanstack/react-router' {
       path: '/claim'
       fullPath: '/claim'
       preLoaderRoute: typeof ClaimRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/status': {
+      id: '/status'
+      path: '/status'
+      fullPath: '/status'
+      preLoaderRoute: typeof StatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/track': {
@@ -230,20 +330,15 @@ const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
+  AboutRoute: AboutRoute,
   AdminLoginRoute: AdminLoginRoute,
   ClaimRoute: ClaimRoute,
+  ContactRoute: ContactRoute,
+  PrivacyRoute: PrivacyRoute,
+  StatusRoute: StatusRoute,
+  TermsRoute: TermsRoute,
   TrackRoute: TrackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
