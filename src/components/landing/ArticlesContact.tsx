@@ -1,21 +1,37 @@
+import { Link } from "@tanstack/react-router";
 import { ChatIcon, ChevronRightIcon, MailIcon, PhoneIcon, WhatsAppIcon } from "./icons";
-
-const articles = [
-  "How do I file a claim?",
-  "How long does a refund take?",
-  "How do I track my claim?",
-  "What evidence should I attach?",
-  "Can I add more info after submitting?",
-  "What counts as a valid claim?",
-  "Who reviews my claim?",
-  "What if I disagree with the outcome?",
-];
+import { ARTICLES } from "@/lib/articles";
+import { SITE } from "@/lib/site";
 
 const contacts = [
-  { Icon: PhoneIcon, title: "Call us", desc: "Lines open 7 days a week", link: "View numbers" },
-  { Icon: ChatIcon, title: "Live chat", desc: "Chat with our support team", link: "Start chat" },
-  { Icon: MailIcon, title: "Email us", desc: "We reply within one business day", link: "Send email", href: "mailto:careonthebeach@gmail.com" },
-  { Icon: WhatsAppIcon, title: "WhatsApp", desc: "Message us directly", link: "Message us" },
+  {
+    Icon: PhoneIcon,
+    title: "Call us",
+    desc: "Lines open 7 days a week",
+    link: SITE.phoneDisplay,
+    href: SITE.phoneHref,
+  },
+  {
+    Icon: ChatIcon,
+    title: "Live chat",
+    desc: "Chat with our support team",
+    link: "Start chat",
+    href: "/contact#chat",
+  },
+  {
+    Icon: MailIcon,
+    title: "Email us",
+    desc: "We reply within one business day",
+    link: "Send email",
+    href: `mailto:${SITE.email}`,
+  },
+  {
+    Icon: WhatsAppIcon,
+    title: "WhatsApp",
+    desc: "Message us directly",
+    link: "Message us",
+    href: SITE.whatsapp,
+  },
 ];
 
 export function ArticlesContact() {
@@ -24,20 +40,21 @@ export function ArticlesContact() {
       <div>
         <div className="flex items-end justify-between gap-4">
           <h2 className="font-display text-2xl font-bold text-navy">Popular articles</h2>
-          <a href="#" className="text-sm font-semibold text-navy-3 hover:underline">
+          <Link to="/help" className="text-sm font-semibold text-navy-3 hover:underline">
             View all articles →
-          </a>
+          </Link>
         </div>
         <ul className="mt-6 grid gap-1 sm:grid-cols-2">
-          {articles.map((a) => (
-            <li key={a}>
-              <a
-                href="#"
+          {ARTICLES.map((a) => (
+            <li key={a.slug}>
+              <Link
+                to="/help/$articleSlug"
+                params={{ articleSlug: a.slug }}
                 className="flex items-center justify-between gap-3 rounded-[8px] px-3 py-3 text-sm text-ink hover:bg-paper"
               >
-                <span className="min-w-0">{a}</span>
+                <span className="min-w-0">{a.title}</span>
                 <ChevronRightIcon className="h-4 w-4 shrink-0 text-navy-3" />
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -54,7 +71,10 @@ export function ArticlesContact() {
               </span>
               <h3 className="mt-3 font-display text-sm font-semibold text-navy">{title}</h3>
               <p className="mt-1 text-xs text-ink-soft">{desc}</p>
-              <a href={href} className="mt-2 inline-block text-xs font-semibold text-navy-3 hover:underline">
+              <a
+                href={href}
+                className="mt-2 inline-block text-xs font-semibold text-navy-3 hover:underline"
+              >
                 {link}
               </a>
             </div>

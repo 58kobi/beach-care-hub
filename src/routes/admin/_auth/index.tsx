@@ -22,7 +22,7 @@ import {
   type IssueType,
 } from "@/lib/claims";
 
-export const Route = createFileRoute("/admin/")({
+export const Route = createFileRoute("/admin/_auth/")({
   head: () => ({ meta: [{ title: "Overview — OnTheBeachCare Admin" }] }),
   component: Overview,
 });

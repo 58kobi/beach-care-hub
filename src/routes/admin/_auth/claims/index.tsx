@@ -14,7 +14,7 @@ import {
   type IssueType,
 } from "@/lib/claims";
 
-export const Route = createFileRoute("/admin/claims/")({
+export const Route = createFileRoute("/admin/_auth/claims/")({
   head: () => ({ meta: [{ title: "Claims — OnTheBeachCare Admin" }] }),
   component: ClaimsPage,
 });

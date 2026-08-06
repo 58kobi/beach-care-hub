@@ -1,9 +1,32 @@
+import { Link } from "@tanstack/react-router";
 import { WaveIcon } from "./icons";
+import { SITE } from "@/lib/site";
 
-const columns = [
-  { title: "Service", links: ["Report an issue", "Track my claim", "Report types"] },
-  { title: "Help", links: ["Help Centre", "Contact us", "Status page"] },
-  { title: "Legal", links: ["Terms & conditions", "Privacy policy", "Disclaimer"] },
+const columns: { title: string; links: { label: string; to: string }[] }[] = [
+  {
+    title: "Service",
+    links: [
+      { label: "Report an issue", to: "/report" },
+      { label: "Track my claim", to: "/track" },
+      { label: "Report types", to: "/help" },
+    ],
+  },
+  {
+    title: "Help",
+    links: [
+      { label: "Help Centre", to: "/help" },
+      { label: "Contact us", to: "/contact" },
+      { label: "Status page", to: "/status" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { label: "Terms & conditions", to: "/terms" },
+      { label: "Privacy policy", to: "/privacy" },
+      { label: "Disclaimer", to: "/terms" },
+    ],
+  },
 ];
 
 export function Footer() {
@@ -19,7 +42,7 @@ export function Footer() {
               <span className="block font-display text-lg font-bold leading-tight">
                 OnTheBeachCare
               </span>
-              <span className="block text-xs text-white/60">Independent claims &amp; support</span>
+              <span className="block text-xs text-white/60">claims &amp; support</span>
             </span>
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">
@@ -33,10 +56,10 @@ export function Footer() {
             <h3 className="font-display text-sm font-semibold">{col.title}</h3>
             <ul className="mt-4 space-y-2.5">
               {col.links.map((l) => (
-                <li key={l}>
-                  <a href="#" className="text-sm text-white/60 hover:text-white">
-                    {l}
-                  </a>
+                <li key={l.label}>
+                  <Link to={l.to} className="text-sm text-white/60 hover:text-white">
+                    {l.label}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -47,34 +70,39 @@ export function Footer() {
           <h3 className="font-display text-sm font-semibold">Company</h3>
           <ul className="mt-4 space-y-2.5 text-sm text-white/60">
             <li>
-              <a href="#" className="hover:text-white">
+              <Link to="/about" className="hover:text-white">
                 About us
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:text-white">
+              <Link to="/contact" className="hover:text-white">
                 Contact
+              </Link>
+            </li>
+            <li>
+              <a href={`mailto:${SITE.email}`} className="hover:text-white">
+                {SITE.email}
               </a>
             </li>
             <li>
-              <a href="mailto:careonthebeach@gmail.com" className="hover:text-white">
-                careonthebeach@gmail.com
+              <a href={SITE.whatsapp} className="hover:text-white">
+                WhatsApp: {SITE.phoneDisplay}
               </a>
             </li>
             <li>
-              <a href="https://wa.me/447000000000" className="hover:text-white">
-                WhatsApp: +44 7000 000000
+              <a href={SITE.phoneHref} className="hover:text-white">
+                Call: {SITE.phoneDisplay}
               </a>
             </li>
             <li>
-              <a href="tel:+441610000000" className="hover:text-white">
-                Call: +44 161 000 0000
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-white">
+              <Link to="/claim" className="hover:text-white">
                 Submit an online form
-              </a>
+              </Link>
+            </li>
+            <li>
+              <Link to="/admin/login" className="hover:text-white">
+                Staff login
+              </Link>
             </li>
           </ul>
         </div>

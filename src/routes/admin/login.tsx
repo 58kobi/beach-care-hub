@@ -1,4 +1,4 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute, useRouter, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,7 +7,7 @@ import { ensureAdminAccount } from "@/lib/admin.functions";
 const title = "Admin sign in — OnTheBeachCare";
 const description = "Restricted admin console access for the OnTheBeachCare claims team.";
 
-export const Route = createFileRoute("/admin-login")({
+export const Route = createFileRoute("/admin/login")({
   head: () => ({
     meta: [
       { title },
@@ -102,6 +102,10 @@ function AdminLogin() {
         >
           {loading ? "Signing in…" : "Sign in"}
         </button>
+
+        <Link to="/" className="mt-4 block text-center text-xs text-slate-500 hover:text-navy">
+          ← Back to the site
+        </Link>
       </form>
     </div>
   );

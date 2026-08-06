@@ -12,7 +12,7 @@ import {
   type IssueType,
 } from "@/lib/claims";
 
-export const Route = createFileRoute("/admin/claims/$id")({
+export const Route = createFileRoute("/admin/_auth/claims/$id")({
   head: () => ({ meta: [{ title: "Claim detail — OnTheBeachCare Admin" }] }),
   component: ClaimDetail,
 });

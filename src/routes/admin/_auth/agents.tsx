@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/admin/agents")({
+export const Route = createFileRoute("/admin/_auth/agents")({
   head: () => ({ meta: [{ title: "Agents — OnTheBeachCare Admin" }] }),
   component: AgentsPage,
 });
