@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import bookingImg from "@/assets/issue-booking.jpg";
 import flightsImg from "@/assets/issue-flights.jpg";
 import refundsImg from "@/assets/issue-refunds.jpg";
-import resortAsset from "@/assets/onthe_beach_image_1.jpg.asset.json";
+import resortImg from "@/assets/issue-resort.jpg";
 import beachAsset from "@/assets/beach1.jpeg.asset.json";
 import trashAsset from "@/assets/trash_on_the_beach.jpg.asset.json";
 
@@ -18,7 +18,7 @@ const slides = [
     eyebrow: "On arrival",
     title: "Hotel & Resort Problems",
     desc: "Room or resort not matching what was advertised.",
-    img: resortAsset.url,
+    img: resortImg,
     alt: "Resort pool area with sun loungers and parasols",
   },
   {
@@ -108,8 +108,10 @@ export function IssueCarousel() {
               <img
                 src={s.img}
                 alt={s.alt}
-                loading={i === 0 ? "eager" : "lazy"}
-                className="absolute inset-0 h-full w-full object-cover"
+                loading={i <= 1 ? "eager" : "lazy"}
+                decoding="async"
+                fetchPriority={i === 0 ? "high" : "auto"}
+                className="absolute inset-0 h-full w-full object-cover [image-rendering:auto] [transform:translateZ(0)]"
               />
               <div className="absolute inset-0 bg-[linear-gradient(to_top_right,color-mix(in_oklab,var(--navy)_82%,transparent),color-mix(in_oklab,var(--navy)_35%,transparent)_55%,transparent)]" />
               <div className="absolute bottom-0 left-0 max-w-[85%] p-5 sm:p-7">
