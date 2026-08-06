@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
-import { Route as AdminLoginRouteImport } from './routes/admin-login'
 import { Route as ClaimRouteImport } from './routes/claim'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as HelpRouteImport } from './routes/help'
@@ -43,11 +42,6 @@ const AboutRoute = AboutRouteImport.update({
 const AdminRouteRoute = AdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/admin-login',
-  path: '/admin-login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ClaimRoute = ClaimRouteImport.update({
@@ -134,7 +128,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/about': typeof AboutRoute
-  '/admin-login': typeof AdminLoginRoute
   '/claim': typeof ClaimRoute
   '/contact': typeof ContactRoute
   '/help': typeof HelpRouteWithChildren
@@ -155,7 +148,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminAuthIndexRoute
   '/about': typeof AboutRoute
-  '/admin-login': typeof AdminLoginRoute
   '/claim': typeof ClaimRoute
   '/contact': typeof ContactRoute
   '/help': typeof HelpRouteWithChildren
@@ -176,7 +168,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/about': typeof AboutRoute
-  '/admin-login': typeof AdminLoginRoute
   '/claim': typeof ClaimRoute
   '/contact': typeof ContactRoute
   '/help': typeof HelpRouteWithChildren
@@ -200,7 +191,6 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/about'
-    | '/admin-login'
     | '/claim'
     | '/contact'
     | '/help'
@@ -221,7 +211,6 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/about'
-    | '/admin-login'
     | '/claim'
     | '/contact'
     | '/help'
@@ -241,7 +230,6 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/about'
-    | '/admin-login'
     | '/claim'
     | '/contact'
     | '/help'
@@ -264,7 +252,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
-  AdminLoginRoute: typeof AdminLoginRoute
   ClaimRoute: typeof ClaimRoute
   ContactRoute: typeof ContactRoute
   HelpRoute: typeof HelpRouteWithChildren
@@ -297,13 +284,6 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin-login': {
-      id: '/admin-login'
-      path: '/admin-login'
-      fullPath: '/admin-login'
-      preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/claim': {
@@ -467,7 +447,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
   AboutRoute: AboutRoute,
-  AdminLoginRoute: AdminLoginRoute,
   ClaimRoute: ClaimRoute,
   ContactRoute: ContactRoute,
   HelpRoute: HelpRouteWithChildren,
@@ -481,3 +460,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
