@@ -1,6 +1,11 @@
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { SearchIcon } from "./icons";
 
 export function Hero() {
+  const navigate = useNavigate();
+  const [q, setQ] = useState("");
+
   return (
     <section className="relative overflow-hidden bg-[linear-gradient(135deg,var(--navy),var(--navy-3))] px-4 pb-[100px] pt-16 sm:px-6">
       <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-yellow/10 blur-3xl" />
@@ -14,13 +19,18 @@ export function Hero() {
           trip.
         </p>
         <form
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={(e) => {
+            e.preventDefault();
+            navigate({ to: "/help" });
+          }}
           className="mt-8 flex items-center gap-2 rounded-[12px] bg-white p-2 shadow-lg"
         >
           <SearchIcon className="ml-2 hidden h-5 w-5 shrink-0 text-ink-soft sm:block" />
           <input
             type="search"
             aria-label="Search help"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
             placeholder="Search help articles, claim status, or a topic…"
             className="min-w-0 flex-1 bg-transparent px-2 py-2 text-sm text-ink outline-none placeholder:text-ink-soft"
           />
