@@ -109,11 +109,6 @@ function ClaimsPage() {
   function advance(claim: ClaimRow) {
     const next = nextStatus(claim.status);
     if (!next) return;
-    if (next === "assigned") {
-      setPickedAgent("");
-      setPickerFor(claim.id);
-      return;
-    }
     void applyUpdate(claim, { status: next }, STATUS_LABELS[next]);
   }
 
