@@ -63,13 +63,10 @@ export function StatusBadge({ status }: { status: ClaimStatus }) {
 function ClaimsPage() {
   const qc = useQueryClient();
   const { data: claims, isLoading } = useQuery({ queryKey: ["admin-claims"], queryFn: loadClaims });
-  const { data: agents } = useQuery({ queryKey: ["admin-agents"], queryFn: loadAgents });
 
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [typeFilter, setTypeFilter] = useState<string>("");
   const [search, setSearch] = useState("");
-  const [pickerFor, setPickerFor] = useState<string | null>(null);
-  const [pickedAgent, setPickedAgent] = useState("");
   const [busyId, setBusyId] = useState<string | null>(null);
   const [flashId, setFlashId] = useState<string | null>(null);
 
