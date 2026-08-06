@@ -218,35 +218,7 @@ function ClaimsPage() {
                     {new Date(c.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    {pickerFor === c.id ? (
-                      <div className="flex items-center justify-end gap-2">
-                        <select
-                          value={pickedAgent}
-                          onChange={(e) => setPickedAgent(e.target.value)}
-                          className="rounded-md border border-slate-200 px-2 py-1 text-xs"
-                        >
-                          <option value="">Select agent…</option>
-                          {(agents ?? []).map((a) => (
-                            <option key={a.id} value={a.id}>
-                              {a.name}
-                            </option>
-                          ))}
-                        </select>
-                        <button
-                          disabled={!pickedAgent || busyId === c.id}
-                          onClick={() => void confirmAssign(c)}
-                          className="rounded-md bg-navy px-2.5 py-1 text-xs font-semibold text-white disabled:opacity-50"
-                        >
-                          Confirm
-                        </button>
-                        <button
-                          onClick={() => setPickerFor(null)}
-                          className="text-xs text-slate-500"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    ) : next ? (
+                    {next ? (
                       <button
                         disabled={busyId === c.id}
                         onClick={() => advance(c)}
@@ -264,11 +236,7 @@ function ClaimsPage() {
           </tbody>
         </table>
       </div>
-      {(agents ?? []).length === 0 && (
-        <p className="text-xs text-slate-500">
-          No active agents yet — add one under Agents before advancing a claim to Assigned.
-        </p>
-      )}
+
     </div>
   );
 }
