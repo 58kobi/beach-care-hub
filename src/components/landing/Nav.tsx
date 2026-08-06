@@ -1,7 +1,13 @@
 import { MenuIcon } from "./icons";
 import logoAsset from "@/assets/logo-onthebeach.png.asset.json";
 
-const tabs = ["Help Centre", "Report an Issue", "Manage Claim", "Refund Status", "Contact Us"];
+const tabs: { label: string; href: string }[] = [
+  { label: "Help Centre", href: "/" },
+  { label: "Report an Issue", href: "/claim" },
+  { label: "Manage Claim", href: "/claim" },
+  { label: "Refund Status", href: "/track" },
+  { label: "Contact Us", href: "mailto:careonthebeach@gmail.com" },
+];
 
 export function Nav() {
   return (
@@ -47,8 +53,8 @@ export function Nav() {
         <div className="flex w-full gap-1 overflow-x-auto px-3 sm:px-4">
           {tabs.map((tab, i) => (
             <a
-              key={tab}
-              href="#"
+              key={tab.label}
+              href={tab.href}
               className={
                 "whitespace-nowrap px-3 py-3 text-sm font-medium " +
                 (i === 0
@@ -56,7 +62,7 @@ export function Nav() {
                   : "border-b-2 border-transparent text-ink-soft hover:text-navy")
               }
             >
-              {tab}
+              {tab.label}
             </a>
           ))}
         </div>
