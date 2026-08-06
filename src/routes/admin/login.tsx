@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { ensureAdminAccount } from "@/lib/admin.functions";
+import { isCurrentUserAdmin } from "@/lib/roles";
+
 
 const title = "Admin sign in — OnTheBeachCare";
 const description = "Restricted admin console access for the OnTheBeachCare claims team.";
@@ -44,10 +46,8 @@ function AdminLogin() {
         setError("Invalid credentials.");
         return;
       }
-      const { data: isAdmin } = await supabase.rpc("has_role", {
-        _user_id: data.user.id,
-        _role: "admin",
-      });
+      const isAdmin = await isCurrentUserAdmin(data.user.id);
+
       if (!isAdmin) {
         await supabase.auth.signOut();
         setError("This account does not have admin access.");
