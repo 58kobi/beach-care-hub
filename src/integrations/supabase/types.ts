@@ -14,16 +14,229 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      agents: {
+        Row: {
+          active: boolean
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      claim_attachments: {
+        Row: {
+          claim_id: string
+          created_at: string
+          file_name: string | null
+          file_path: string
+          id: string
+        }
+        Insert: {
+          claim_id: string
+          created_at?: string
+          file_name?: string | null
+          file_path: string
+          id?: string
+        }
+        Update: {
+          claim_id?: string
+          created_at?: string
+          file_name?: string | null
+          file_path?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "claim_attachments_claim_id_fkey"
+            columns: ["claim_id"]
+            isOneToOne: false
+            referencedRelation: "claims"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      claim_status_history: {
+        Row: {
+          changed_by: string | null
+          claim_id: string
+          created_at: string
+          from_status: Database["public"]["Enums"]["claim_status"] | null
+          id: string
+          to_status: Database["public"]["Enums"]["claim_status"]
+        }
+        Insert: {
+          changed_by?: string | null
+          claim_id: string
+          created_at?: string
+          from_status?: Database["public"]["Enums"]["claim_status"] | null
+          id?: string
+          to_status: Database["public"]["Enums"]["claim_status"]
+        }
+        Update: {
+          changed_by?: string | null
+          claim_id?: string
+          created_at?: string
+          from_status?: Database["public"]["Enums"]["claim_status"] | null
+          id?: string
+          to_status?: Database["public"]["Enums"]["claim_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "claim_status_history_claim_id_fkey"
+            columns: ["claim_id"]
+            isOneToOne: false
+            referencedRelation: "claims"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      claims: {
+        Row: {
+          admin_notes: string | null
+          assigned_agent_id: string | null
+          created_at: string
+          description: string
+          email: string
+          full_name: string
+          id: string
+          issue_type: Database["public"]["Enums"]["issue_type"]
+          location: string
+          phone: string | null
+          reference: string
+          status: Database["public"]["Enums"]["claim_status"]
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          assigned_agent_id?: string | null
+          created_at?: string
+          description: string
+          email: string
+          full_name: string
+          id?: string
+          issue_type: Database["public"]["Enums"]["issue_type"]
+          location: string
+          phone?: string | null
+          reference?: string
+          status?: Database["public"]["Enums"]["claim_status"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          assigned_agent_id?: string | null
+          created_at?: string
+          description?: string
+          email?: string
+          full_name?: string
+          id?: string
+          issue_type?: Database["public"]["Enums"]["issue_type"]
+          location?: string
+          phone?: string | null
+          reference?: string
+          status?: Database["public"]["Enums"]["claim_status"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "claims_assigned_agent_id_fkey"
+            columns: ["assigned_agent_id"]
+            isOneToOne: false
+            referencedRelation: "agents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_claim_reference: { Args: never; Returns: string }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      claim_status:
+        | "submitted"
+        | "in_review"
+        | "assigned"
+        | "in_progress"
+        | "resolved"
+        | "rejected"
+      issue_type:
+        | "booking"
+        | "payment_refund"
+        | "flight_transfer"
+        | "hotel_resort"
+        | "cancellation"
+        | "beach_hazard"
+        | "other"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +363,25 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      claim_status: [
+        "submitted",
+        "in_review",
+        "assigned",
+        "in_progress",
+        "resolved",
+        "rejected",
+      ],
+      issue_type: [
+        "booking",
+        "payment_refund",
+        "flight_transfer",
+        "hotel_resort",
+        "cancellation",
+        "beach_hazard",
+        "other",
+      ],
+    },
   },
 } as const
