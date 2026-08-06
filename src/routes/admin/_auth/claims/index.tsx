@@ -40,15 +40,8 @@ async function loadClaims() {
   return (data ?? []) as ClaimRow[];
 }
 
-async function loadAgents() {
-  const { data, error } = await supabase
-    .from("agents")
-    .select("id, name")
-    .eq("active", true)
-    .order("name");
-  if (error) throw error;
-  return data ?? [];
-}
+
+
 
 export function StatusBadge({ status }: { status: ClaimStatus }) {
   return (
@@ -63,13 +56,10 @@ export function StatusBadge({ status }: { status: ClaimStatus }) {
 function ClaimsPage() {
   const qc = useQueryClient();
   const { data: claims, isLoading } = useQuery({ queryKey: ["admin-claims"], queryFn: loadClaims });
-  const { data: agents } = useQuery({ queryKey: ["admin-agents"], queryFn: loadAgents });
 
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [typeFilter, setTypeFilter] = useState<string>("");
   const [search, setSearch] = useState("");
-  const [pickerFor, setPickerFor] = useState<string | null>(null);
-  const [pickedAgent, setPickedAgent] = useState("");
   const [busyId, setBusyId] = useState<string | null>(null);
   const [flashId, setFlashId] = useState<string | null>(null);
 
@@ -109,23 +99,11 @@ function ClaimsPage() {
   function advance(claim: ClaimRow) {
     const next = nextStatus(claim.status);
     if (!next) return;
-    if (next === "assigned") {
-      setPickedAgent("");
-      setPickerFor(claim.id);
-      return;
-    }
     void applyUpdate(claim, { status: next }, STATUS_LABELS[next]);
   }
 
-  async function confirmAssign(claim: ClaimRow) {
-    if (!pickedAgent) return;
-    await applyUpdate(
-      claim,
-      { status: "assigned", assigned_agent_id: pickedAgent },
-      STATUS_LABELS.assigned,
-    );
-    setPickerFor(null);
-  }
+
+
 
   const selectClass =
     "rounded-md border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-navy";
@@ -223,35 +201,7 @@ function ClaimsPage() {
                     {new Date(c.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    {pickerFor === c.id ? (
-                      <div className="flex items-center justify-end gap-2">
-                        <select
-                          value={pickedAgent}
-                          onChange={(e) => setPickedAgent(e.target.value)}
-                          className="rounded-md border border-slate-200 px-2 py-1 text-xs"
-                        >
-                          <option value="">Select agent…</option>
-                          {(agents ?? []).map((a) => (
-                            <option key={a.id} value={a.id}>
-                              {a.name}
-                            </option>
-                          ))}
-                        </select>
-                        <button
-                          disabled={!pickedAgent || busyId === c.id}
-                          onClick={() => void confirmAssign(c)}
-                          className="rounded-md bg-navy px-2.5 py-1 text-xs font-semibold text-white disabled:opacity-50"
-                        >
-                          Confirm
-                        </button>
-                        <button
-                          onClick={() => setPickerFor(null)}
-                          className="text-xs text-slate-500"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    ) : next ? (
+                    {next ? (
                       <button
                         disabled={busyId === c.id}
                         onClick={() => advance(c)}
@@ -269,11 +219,7 @@ function ClaimsPage() {
           </tbody>
         </table>
       </div>
-      {(agents ?? []).length === 0 && (
-        <p className="text-xs text-slate-500">
-          No active agents yet — add one under Agents before advancing a claim to Assigned.
-        </p>
-      )}
+
     </div>
   );
 }
