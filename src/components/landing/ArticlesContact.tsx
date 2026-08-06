@@ -14,7 +14,7 @@ const articles = [
 const contacts = [
   { Icon: PhoneIcon, title: "Call us", desc: "Lines open 7 days a week", link: "View numbers" },
   { Icon: ChatIcon, title: "Live chat", desc: "Chat with our support team", link: "Start chat" },
-  { Icon: MailIcon, title: "Email us", desc: "We reply within one business day", link: "Send email" },
+  { Icon: MailIcon, title: "Email us", desc: "We reply within one business day", link: "Send email", href: "mailto:careonthebeach@gmail.com" },
   { Icon: WhatsAppIcon, title: "WhatsApp", desc: "Message us directly", link: "Message us" },
 ];
 
@@ -47,14 +47,14 @@ export function ArticlesContact() {
         <h2 className="font-display text-2xl font-bold text-navy">Contact us</h2>
         <p className="mt-1 text-sm text-ink-soft">Our team is here to help</p>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          {contacts.map(({ Icon, title, desc, link }) => (
+          {contacts.map(({ Icon, title, desc, link, href }) => (
             <div key={title} className="rounded-[12px] border border-line p-4">
               <span className="grid h-10 w-10 place-items-center rounded-[10px] bg-paper text-navy-3">
                 <Icon className="h-5 w-5" />
               </span>
               <h3 className="mt-3 font-display text-sm font-semibold text-navy">{title}</h3>
               <p className="mt-1 text-xs text-ink-soft">{desc}</p>
-              <a href="#" className="mt-2 inline-block text-xs font-semibold text-navy-3 hover:underline">
+              <a href={href} className="mt-2 inline-block text-xs font-semibold text-navy-3 hover:underline">
                 {link}
               </a>
             </div>
