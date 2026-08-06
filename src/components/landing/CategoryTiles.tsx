@@ -22,7 +22,7 @@ const tiles = [
 
 export function CategoryTiles() {
   return (
-    <section className="relative z-10 -mt-16 px-4 sm:px-6">
+    <section className="relative z-10 px-4 sm:px-6">
       <div className="mx-auto grid max-w-6xl grid-cols-2 gap-4 lg:grid-cols-4">
         {tiles.map(({ Icon, title, desc }) => (
           <a
