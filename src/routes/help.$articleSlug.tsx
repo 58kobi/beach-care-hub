@@ -48,7 +48,7 @@ function ArticlePage() {
   return (
     <PageShell title={article.title} intro={article.summary}>
       <Prose>
-        {article.body.map((p) => (
+        {article.body.map((p: string) => (
           <p key={p}>{p}</p>
         ))}
       </Prose>
