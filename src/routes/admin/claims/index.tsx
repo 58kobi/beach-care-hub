@@ -87,7 +87,11 @@ function ClaimsPage() {
     });
   }, [claims, statusFilter, typeFilter, search]);
 
-  async function applyUpdate(claim: ClaimRow, patch: Record<string, unknown>, label: string) {
+  async function applyUpdate(
+    claim: ClaimRow,
+    patch: { status: ClaimStatus; assigned_agent_id?: string },
+    label: string,
+  ) {
     setBusyId(claim.id);
     const { error } = await supabase.from("claims").update(patch).eq("id", claim.id);
     setBusyId(null);

@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as AdminLoginRouteImport } from './routes/admin-login'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminClaimsIndexRouteImport } from './routes/admin/claims/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,17 +35,24 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminClaimsIndexRoute = AdminClaimsIndexRouteImport.update({
+  id: '/claims/',
+  path: '/claims/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/admin-login': typeof AdminLoginRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/claims/': typeof AdminClaimsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin-login': typeof AdminLoginRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/claims': typeof AdminClaimsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -52,13 +60,15 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteRouteWithChildren
   '/admin-login': typeof AdminLoginRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/claims/': typeof AdminClaimsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/admin-login' | '/admin/'
+  fullPaths: '/' | '/admin' | '/admin-login' | '/admin/' | '/admin/claims/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin-login' | '/admin'
-  id: '__root__' | '/' | '/admin' | '/admin-login' | '/admin/'
+  to: '/' | '/admin-login' | '/admin' | '/admin/claims'
+  id:
+    '__root__' | '/' | '/admin' | '/admin-login' | '/admin/' | '/admin/claims/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -97,15 +107,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/claims/': {
+      id: '/admin/claims/'
+      path: '/claims'
+      fullPath: '/admin/claims/'
+      preLoaderRoute: typeof AdminClaimsIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
   }
 }
 
 interface AdminRouteRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminClaimsIndexRoute: typeof AdminClaimsIndexRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
+  AdminClaimsIndexRoute: AdminClaimsIndexRoute,
 }
 
 const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
