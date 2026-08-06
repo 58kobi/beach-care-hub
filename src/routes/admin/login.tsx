@@ -44,10 +44,8 @@ function AdminLogin() {
         setError("Invalid credentials.");
         return;
       }
-      const { data: isAdmin } = await supabase.rpc("has_role", {
-        _user_id: data.user.id,
-        _role: "admin",
-      });
+      const isAdmin = await isCurrentUserAdmin(data.user.id);
+
       if (!isAdmin) {
         await supabase.auth.signOut();
         setError("This account does not have admin access.");
