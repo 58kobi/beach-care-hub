@@ -57,8 +57,8 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <a href="mailto:support@onthebeachcare.com" className="hover:text-white">
-                support@onthebeachcare.com
+              <a href="mailto:careonthebeach@gmail.com" className="hover:text-white">
+                careonthebeach@gmail.com
               </a>
             </li>
             <li>

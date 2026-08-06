@@ -64,7 +64,7 @@ export function ReportIssueModal({ open, onClose }: { open: boolean; onClose: ()
                   <input
                     type="email"
                     required
-                    placeholder="you@email.com"
+                    placeholder="careonthebeach@gmail.com"
                     className={`mt-1.5 font-normal ${fieldClass}`}
                   />
                 </label>
