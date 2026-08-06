@@ -21,12 +21,12 @@ import { Route as ReportRouteImport } from './routes/report'
 import { Route as StatusRouteImport } from './routes/status'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TrackRouteImport } from './routes/track'
-import { Route as AdminIndexRouteImport } from './routes/admin/index'
-import { Route as AdminAgentsRouteImport } from './routes/admin/agents'
 import { Route as ClaimsReferenceRouteImport } from './routes/claims.$reference'
 import { Route as HelpArticleSlugRouteImport } from './routes/help.$articleSlug'
-import { Route as AdminClaimsIndexRouteImport } from './routes/admin/claims/index'
-import { Route as AdminClaimsIdRouteImport } from './routes/admin/claims/$id'
+import { Route as AdminAuthIndexRouteImport } from './routes/admin/_auth/index'
+import { Route as AdminAuthAgentsRouteImport } from './routes/admin/_auth/agents'
+import { Route as AdminAuthClaimsIndexRouteImport } from './routes/admin/_auth/claims/index'
+import { Route as AdminAuthClaimsIdRouteImport } from './routes/admin/_auth/claims/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -88,16 +88,6 @@ const TrackRoute = TrackRouteImport.update({
   path: '/track',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AdminRouteRoute,
-} as any)
-const AdminAgentsRoute = AdminAgentsRouteImport.update({
-  id: '/agents',
-  path: '/agents',
-  getParentRoute: () => AdminRouteRoute,
-} as any)
 const ClaimsReferenceRoute = ClaimsReferenceRouteImport.update({
   id: '/claims/$reference',
   path: '/claims/$reference',
@@ -108,13 +98,23 @@ const HelpArticleSlugRoute = HelpArticleSlugRouteImport.update({
   path: '/$articleSlug',
   getParentRoute: () => HelpRoute,
 } as any)
-const AdminClaimsIndexRoute = AdminClaimsIndexRouteImport.update({
-  id: '/claims/',
+const AdminAuthIndexRoute = AdminAuthIndexRouteImport.update({
+  id: '/_auth/',
+  path: '/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminAuthAgentsRoute = AdminAuthAgentsRouteImport.update({
+  id: '/_auth/agents',
+  path: '/agents',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminAuthClaimsIndexRoute = AdminAuthClaimsIndexRouteImport.update({
+  id: '/_auth/claims/',
   path: '/claims/',
   getParentRoute: () => AdminRouteRoute,
 } as any)
-const AdminClaimsIdRoute = AdminClaimsIdRouteImport.update({
-  id: '/claims/$id',
+const AdminAuthClaimsIdRoute = AdminAuthClaimsIdRouteImport.update({
+  id: '/_auth/claims/$id',
   path: '/claims/$id',
   getParentRoute: () => AdminRouteRoute,
 } as any)
@@ -132,12 +132,12 @@ export interface FileRoutesByFullPath {
   '/status': typeof StatusRoute
   '/terms': typeof TermsRoute
   '/track': typeof TrackRoute
-  '/admin/agents': typeof AdminAgentsRoute
   '/claims/$reference': typeof ClaimsReferenceRoute
   '/help/$articleSlug': typeof HelpArticleSlugRoute
-  '/admin/': typeof AdminIndexRoute
-  '/admin/claims/$id': typeof AdminClaimsIdRoute
-  '/admin/claims/': typeof AdminClaimsIndexRoute
+  '/admin/agents': typeof AdminAuthAgentsRoute
+  '/admin/': typeof AdminAuthIndexRoute
+  '/admin/claims/$id': typeof AdminAuthClaimsIdRoute
+  '/admin/claims/': typeof AdminAuthClaimsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -151,12 +151,12 @@ export interface FileRoutesByTo {
   '/status': typeof StatusRoute
   '/terms': typeof TermsRoute
   '/track': typeof TrackRoute
-  '/admin/agents': typeof AdminAgentsRoute
   '/claims/$reference': typeof ClaimsReferenceRoute
   '/help/$articleSlug': typeof HelpArticleSlugRoute
-  '/admin': typeof AdminIndexRoute
-  '/admin/claims/$id': typeof AdminClaimsIdRoute
-  '/admin/claims': typeof AdminClaimsIndexRoute
+  '/admin/agents': typeof AdminAuthAgentsRoute
+  '/admin': typeof AdminAuthIndexRoute
+  '/admin/claims/$id': typeof AdminAuthClaimsIdRoute
+  '/admin/claims': typeof AdminAuthClaimsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -172,12 +172,12 @@ export interface FileRoutesById {
   '/status': typeof StatusRoute
   '/terms': typeof TermsRoute
   '/track': typeof TrackRoute
-  '/admin/agents': typeof AdminAgentsRoute
   '/claims/$reference': typeof ClaimsReferenceRoute
   '/help/$articleSlug': typeof HelpArticleSlugRoute
-  '/admin/': typeof AdminIndexRoute
-  '/admin/claims/$id': typeof AdminClaimsIdRoute
-  '/admin/claims/': typeof AdminClaimsIndexRoute
+  '/admin/_auth/agents': typeof AdminAuthAgentsRoute
+  '/admin/_auth/': typeof AdminAuthIndexRoute
+  '/admin/_auth/claims/$id': typeof AdminAuthClaimsIdRoute
+  '/admin/_auth/claims/': typeof AdminAuthClaimsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -194,9 +194,9 @@ export interface FileRouteTypes {
     | '/status'
     | '/terms'
     | '/track'
-    | '/admin/agents'
     | '/claims/$reference'
     | '/help/$articleSlug'
+    | '/admin/agents'
     | '/admin/'
     | '/admin/claims/$id'
     | '/admin/claims/'
@@ -213,9 +213,9 @@ export interface FileRouteTypes {
     | '/status'
     | '/terms'
     | '/track'
-    | '/admin/agents'
     | '/claims/$reference'
     | '/help/$articleSlug'
+    | '/admin/agents'
     | '/admin'
     | '/admin/claims/$id'
     | '/admin/claims'
@@ -233,12 +233,12 @@ export interface FileRouteTypes {
     | '/status'
     | '/terms'
     | '/track'
-    | '/admin/agents'
     | '/claims/$reference'
     | '/help/$articleSlug'
-    | '/admin/'
-    | '/admin/claims/$id'
-    | '/admin/claims/'
+    | '/admin/_auth/agents'
+    | '/admin/_auth/'
+    | '/admin/_auth/claims/$id'
+    | '/admin/_auth/claims/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -343,20 +343,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrackRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/': {
-      id: '/admin/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/agents': {
-      id: '/admin/agents'
-      path: '/agents'
-      fullPath: '/admin/agents'
-      preLoaderRoute: typeof AdminAgentsRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
     '/claims/$reference': {
       id: '/claims/$reference'
       path: '/claims/$reference'
@@ -371,35 +357,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HelpArticleSlugRouteImport
       parentRoute: typeof HelpRoute
     }
-    '/admin/claims/': {
-      id: '/admin/claims/'
-      path: '/claims'
-      fullPath: '/admin/claims/'
-      preLoaderRoute: typeof AdminClaimsIndexRouteImport
+    '/admin/_auth/': {
+      id: '/admin/_auth/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminAuthIndexRouteImport
       parentRoute: typeof AdminRouteRoute
     }
-    '/admin/claims/$id': {
-      id: '/admin/claims/$id'
+    '/admin/_auth/agents': {
+      id: '/admin/_auth/agents'
+      path: '/agents'
+      fullPath: '/admin/agents'
+      preLoaderRoute: typeof AdminAuthAgentsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/_auth/claims/': {
+      id: '/admin/_auth/claims/'
+      path: '/claims'
+      fullPath: '/admin/claims/'
+      preLoaderRoute: typeof AdminAuthClaimsIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/_auth/claims/$id': {
+      id: '/admin/_auth/claims/$id'
       path: '/claims/$id'
       fullPath: '/admin/claims/$id'
-      preLoaderRoute: typeof AdminClaimsIdRouteImport
+      preLoaderRoute: typeof AdminAuthClaimsIdRouteImport
       parentRoute: typeof AdminRouteRoute
     }
   }
 }
 
 interface AdminRouteRouteChildren {
-  AdminAgentsRoute: typeof AdminAgentsRoute
-  AdminIndexRoute: typeof AdminIndexRoute
-  AdminClaimsIdRoute: typeof AdminClaimsIdRoute
-  AdminClaimsIndexRoute: typeof AdminClaimsIndexRoute
+  AdminAuthAgentsRoute: typeof AdminAuthAgentsRoute
+  AdminAuthIndexRoute: typeof AdminAuthIndexRoute
+  AdminAuthClaimsIdRoute: typeof AdminAuthClaimsIdRoute
+  AdminAuthClaimsIndexRoute: typeof AdminAuthClaimsIndexRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
-  AdminAgentsRoute: AdminAgentsRoute,
-  AdminIndexRoute: AdminIndexRoute,
-  AdminClaimsIdRoute: AdminClaimsIdRoute,
-  AdminClaimsIndexRoute: AdminClaimsIndexRoute,
+  AdminAuthAgentsRoute: AdminAuthAgentsRoute,
+  AdminAuthIndexRoute: AdminAuthIndexRoute,
+  AdminAuthClaimsIdRoute: AdminAuthClaimsIdRoute,
+  AdminAuthClaimsIndexRoute: AdminAuthClaimsIndexRoute,
 }
 
 const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
