@@ -1,4 +1,5 @@
-import { MenuIcon, WaveIcon } from "./icons";
+import { MenuIcon } from "./icons";
+import logoAsset from "@/assets/logo-onthebeach.png.asset.json";
 
 const tabs = ["Help Centre", "Report an Issue", "Manage Claim", "Refund Status", "Contact Us"];
 
@@ -9,15 +10,19 @@ export function Nav() {
       <div className="border-b border-line">
         <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 py-3 sm:px-6">
           <a href="/" className="flex min-w-0 items-center gap-3">
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[10px] bg-yellow text-navy">
-              <WaveIcon className="h-5 w-5" />
-            </span>
+            <img
+              src={logoAsset.url}
+              alt="On the Beach"
+              className="h-10 w-auto shrink-0"
+              width={110}
+              height={40}
+            />
             <span className="min-w-0">
               <span className="block truncate font-display text-lg font-bold leading-tight text-navy">
                 OnTheBeachCare
               </span>
               <span className="block truncate text-xs text-ink-soft">
-                Independent claims &amp; support
+                claims &amp; support
               </span>
             </span>
           </a>
