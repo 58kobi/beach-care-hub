@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { ensureAdminAccount } from "@/lib/admin.functions";
+import { isCurrentUserAdmin } from "@/lib/roles";
+
 
 const title = "Admin sign in — OnTheBeachCare";
 const description = "Restricted admin console access for the OnTheBeachCare claims team.";
