@@ -10,33 +10,122 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteRouteImport } from './routes/admin/route'
+import { Route as AdminLoginRouteImport } from './routes/admin-login'
+import { Route as TrackRouteImport } from './routes/track'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminAgentsRouteImport } from './routes/admin/agents'
+import { Route as AdminClaimsIndexRouteImport } from './routes/admin/claims/index'
+import { Route as AdminClaimsIdRouteImport } from './routes/admin/claims/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRouteRoute = AdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin-login',
+  path: '/admin-login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrackRoute = TrackRouteImport.update({
+  id: '/track',
+  path: '/track',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminAgentsRoute = AdminAgentsRouteImport.update({
+  id: '/agents',
+  path: '/agents',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminClaimsIndexRoute = AdminClaimsIndexRouteImport.update({
+  id: '/claims/',
+  path: '/claims/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminClaimsIdRoute = AdminClaimsIdRouteImport.update({
+  id: '/claims/$id',
+  path: '/claims/$id',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
+  '/admin-login': typeof AdminLoginRoute
+  '/track': typeof TrackRoute
+  '/admin/agents': typeof AdminAgentsRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/claims/$id': typeof AdminClaimsIdRoute
+  '/admin/claims/': typeof AdminClaimsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin-login': typeof AdminLoginRoute
+  '/track': typeof TrackRoute
+  '/admin/agents': typeof AdminAgentsRoute
+  '/admin': typeof AdminIndexRoute
+  '/admin/claims/$id': typeof AdminClaimsIdRoute
+  '/admin/claims': typeof AdminClaimsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
+  '/admin-login': typeof AdminLoginRoute
+  '/track': typeof TrackRoute
+  '/admin/agents': typeof AdminAgentsRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/claims/$id': typeof AdminClaimsIdRoute
+  '/admin/claims/': typeof AdminClaimsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/admin-login'
+    | '/track'
+    | '/admin/agents'
+    | '/admin/'
+    | '/admin/claims/$id'
+    | '/admin/claims/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin-login'
+    | '/track'
+    | '/admin/agents'
+    | '/admin'
+    | '/admin/claims/$id'
+    | '/admin/claims'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/admin-login'
+    | '/track'
+    | '/admin/agents'
+    | '/admin/'
+    | '/admin/claims/$id'
+    | '/admin/claims/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
+  AdminLoginRoute: typeof AdminLoginRoute
+  TrackRoute: typeof TrackRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +137,82 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin-login': {
+      id: '/admin-login'
+      path: '/admin-login'
+      fullPath: '/admin-login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/track': {
+      id: '/track'
+      path: '/track'
+      fullPath: '/track'
+      preLoaderRoute: typeof TrackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/agents': {
+      id: '/admin/agents'
+      path: '/agents'
+      fullPath: '/admin/agents'
+      preLoaderRoute: typeof AdminAgentsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/claims/': {
+      id: '/admin/claims/'
+      path: '/claims'
+      fullPath: '/admin/claims/'
+      preLoaderRoute: typeof AdminClaimsIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/claims/$id': {
+      id: '/admin/claims/$id'
+      path: '/claims/$id'
+      fullPath: '/admin/claims/$id'
+      preLoaderRoute: typeof AdminClaimsIdRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
   }
 }
 
+interface AdminRouteRouteChildren {
+  AdminAgentsRoute: typeof AdminAgentsRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminClaimsIdRoute: typeof AdminClaimsIdRoute
+  AdminClaimsIndexRoute: typeof AdminClaimsIndexRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminAgentsRoute: AdminAgentsRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  AdminClaimsIdRoute: AdminClaimsIdRoute,
+  AdminClaimsIndexRoute: AdminClaimsIndexRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
+  AdminLoginRoute: AdminLoginRoute,
+  TrackRoute: TrackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
