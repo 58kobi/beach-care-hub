@@ -112,15 +112,8 @@ function ClaimsPage() {
     void applyUpdate(claim, { status: next }, STATUS_LABELS[next]);
   }
 
-  async function confirmAssign(claim: ClaimRow) {
-    if (!pickedAgent) return;
-    await applyUpdate(
-      claim,
-      { status: "assigned", assigned_agent_id: pickedAgent },
-      STATUS_LABELS.assigned,
-    );
-    setPickerFor(null);
-  }
+
+
 
   const selectClass =
     "rounded-md border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-navy";
