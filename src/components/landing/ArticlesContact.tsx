@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ChatIcon, ChevronRightIcon, MailIcon, PhoneIcon, WhatsAppIcon } from "./icons";
-import { ARTICLES } from "@/lib/articles";
+import type { Article } from "@/lib/articles";
 import { SITE } from "@/lib/site";
 
 const contacts = [
@@ -34,7 +34,7 @@ const contacts = [
   },
 ];
 
-export function ArticlesContact() {
+export function ArticlesContact({ articles }: { articles: Article[] }) {
   return (
     <section className="mx-auto grid max-w-6xl gap-10 px-4 pb-16 sm:px-6 lg:grid-cols-[3fr_2fr]">
       <div>
@@ -45,7 +45,7 @@ export function ArticlesContact() {
           </Link>
         </div>
         <ul className="mt-6 grid gap-1 sm:grid-cols-2">
-          {ARTICLES.map((a) => (
+          {articles.map((a) => (
             <li key={a.slug}>
               <Link
                 to="/help/$articleSlug"

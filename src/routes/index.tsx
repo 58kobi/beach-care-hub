@@ -11,6 +11,7 @@ import { ArticlesContact } from "@/components/landing/ArticlesContact";
 import { Faq } from "@/components/landing/Faq";
 import { StatusBanner } from "@/components/landing/StatusBanner";
 import { Footer } from "@/components/landing/Footer";
+import { getServiceStatus, listArticles } from "@/lib/content.functions";
 
 const title = "OnTheBeachCare — Independent claims & support";
 const description =
@@ -29,10 +30,15 @@ export const Route = createFileRoute("/")({
     ],
     links: [{ rel: "canonical", href: "/" }],
   }),
+  loader: async () => {
+    const [articles, status] = await Promise.all([listArticles(), getServiceStatus()]);
+    return { articles, status };
+  },
   component: Index,
 });
 
 function Index() {
+  const { articles, status } = Route.useLoaderData();
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -45,9 +51,9 @@ function Index() {
 
         <ReportedIssues />
         <CtaBand onReport={() => setModalOpen(true)} />
-        <ArticlesContact />
+        <ArticlesContact articles={articles} />
         <Faq />
-        <StatusBanner />
+        <StatusBanner snapshot={status} />
       </main>
       <Footer />
       <ReportIssueModal open={modalOpen} onClose={() => setModalOpen(false)} />

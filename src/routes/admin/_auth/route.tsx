@@ -22,6 +22,8 @@ const nav = [
   { to: "/admin", label: "Overview", exact: true },
   { to: "/admin/claims", label: "Claims", exact: false },
   { to: "/admin/agents", label: "Agents", exact: false },
+  { to: "/admin/articles", label: "Help articles", exact: false },
+  { to: "/admin/status", label: "Service status", exact: false },
 ] as const;
 
 function AdminLayout() {

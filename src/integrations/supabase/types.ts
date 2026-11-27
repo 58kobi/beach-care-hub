@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.15"
+    PostgrestVersion: "14.18"
   }
   public: {
     Tables: {
@@ -35,6 +35,42 @@ export type Database = {
           email?: string | null
           id?: string
           name?: string
+        }
+        Relationships: []
+      }
+      articles: {
+        Row: {
+          body: string[]
+          created_at: string
+          id: string
+          published: boolean
+          slug: string
+          sort_order: number
+          summary: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string[]
+          created_at?: string
+          id?: string
+          published?: boolean
+          slug: string
+          sort_order?: number
+          summary?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string[]
+          created_at?: string
+          id?: string
+          published?: boolean
+          slug?: string
+          sort_order?: number
+          summary?: string
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -164,6 +200,50 @@ export type Database = {
           },
         ]
       }
+      email_outbox: {
+        Row: {
+          body: string
+          claim_id: string | null
+          created_at: string
+          error: string | null
+          id: string
+          sent_at: string | null
+          status: string
+          subject: string
+          to_email: string
+        }
+        Insert: {
+          body: string
+          claim_id?: string | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          sent_at?: string | null
+          status?: string
+          subject: string
+          to_email: string
+        }
+        Update: {
+          body?: string
+          claim_id?: string | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          sent_at?: string | null
+          status?: string
+          subject?: string
+          to_email?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_outbox_claim_id_fkey"
+            columns: ["claim_id"]
+            isOneToOne: false
+            referencedRelation: "claims"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -182,6 +262,33 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id?: string
+        }
+        Relationships: []
+      }
+      service_status: {
+        Row: {
+          id: string
+          name: string
+          note: string | null
+          sort_order: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          note?: string | null
+          sort_order?: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          note?: string | null
+          sort_order?: number
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -212,6 +319,13 @@ export type Database = {
     }
     Functions: {
       generate_claim_reference: { Args: never; Returns: string }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "admin" | "user"

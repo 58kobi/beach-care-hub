@@ -1,12 +1,15 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { PageShell, Prose } from "@/components/landing/PageShell";
-import { ARTICLES, getArticle } from "@/lib/articles";
+import { getArticleBySlug, listArticles } from "@/lib/content.functions";
 
 export const Route = createFileRoute("/help/$articleSlug")({
-  loader: ({ params }) => {
-    const article = getArticle(params.articleSlug);
+  loader: async ({ params }) => {
+    const [article, articles] = await Promise.all([
+      getArticleBySlug({ data: { slug: params.articleSlug } }),
+      listArticles(),
+    ]);
     if (!article) throw notFound();
-    return { article };
+    return { article, articles };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
@@ -42,8 +45,8 @@ function ArticleNotFound() {
 }
 
 function ArticlePage() {
-  const { article } = Route.useLoaderData();
-  const others = ARTICLES.filter((a) => a.slug !== article.slug).slice(0, 4);
+  const { article, articles } = Route.useLoaderData();
+  const others = articles.filter((a) => a.slug !== article.slug).slice(0, 4);
 
   return (
     <PageShell title={article.title} intro={article.summary}>

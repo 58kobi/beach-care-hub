@@ -4,15 +4,15 @@ import { PlusIcon } from "./icons";
 const faqs = [
   {
     q: "What do I need to file a claim?",
-    a: "Your OnTheBeach booking reference, a description of what happened, and any supporting evidence like photos, receipts or screenshots.",
+    a: "Your OnTheBeach booking reference, a description of what happened, and any supporting evidence like photos, receipts or screenshots. You can attach files on the report form.",
   },
   {
     q: "How long until an agent reviews my claim?",
-    a: "Every claim is assigned to a human agent within 24 hours of submission. You'll be able to see who's handling it from your dashboard.",
+    a: "Every claim is reviewed by a member of our team, usually within one business day. We'll email you with the next step.",
   },
   {
     q: "Can I track the progress of my claim?",
-    a: "Yes — use the 'Track a Claim' link in the navigation, or log in to see all your claims and their current status in one place.",
+    a: "Yes — use the 'Track a Claim' page and enter the reference we gave you with the email you used. You'll see the current status and when it last changed.",
   },
   {
     q: "Is there a cost to submit a claim?",

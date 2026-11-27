@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { EVIDENCE_BUCKET } from "@/lib/evidence";
 import {
   CLAIM_STATUSES,
   ISSUE_LABELS,
@@ -82,6 +83,30 @@ function ClaimDetail() {
       return data ?? [];
     },
   });
+
+  const { data: emails } = useQuery({
+    queryKey: ["admin-claim-emails", id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("email_outbox")
+        .select("id, subject, status, created_at")
+        .eq("claim_id", id)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
+  async function openAttachment(path: string) {
+    const { data, error } = await supabase.storage
+      .from(EVIDENCE_BUCKET)
+      .createSignedUrl(path, 60);
+    if (error || !data) {
+      toast.error("Couldn't open this file.");
+      return;
+    }
+    window.open(data.signedUrl, "_blank", "noopener,noreferrer");
+  }
 
   useEffect(() => {
     if (claim && !notesLoaded) {
@@ -182,7 +207,14 @@ function ClaimDetail() {
             ) : (
               <ul className="mt-2 space-y-1 text-sm text-slate-700">
                 {(attachments ?? []).map((a) => (
-                  <li key={a.id}>{a.file_name ?? a.file_path}</li>
+                  <li key={a.id}>
+                    <button
+                      onClick={() => void openAttachment(a.file_path)}
+                      className="text-left font-medium text-navy underline-offset-2 hover:underline"
+                    >
+                      {a.file_name ?? a.file_path}
+                    </button>
+                  </li>
                 ))}
               </ul>
             )}
@@ -221,6 +253,24 @@ function ClaimDetail() {
                 ))}
               </select>
             </label>
+          </section>
+
+          <section className="rounded-[12px] border border-slate-200 bg-white p-4">
+            <h2 className="text-sm font-semibold text-slate-700">Emails to customer</h2>
+            <ul className="mt-3 space-y-2 text-xs text-slate-600">
+              {(emails ?? []).length === 0 && <li className="text-slate-400">None yet.</li>}
+              {(emails ?? []).map((m) => (
+                <li key={m.id}>
+                  <span className="font-semibold text-slate-800">{m.subject}</span>
+                  <span className="ml-2 rounded-full border border-slate-200 px-2 py-0.5 text-[10px] uppercase text-slate-500">
+                    {m.status}
+                  </span>
+                  <span className="ml-2 text-slate-400">
+                    {new Date(m.created_at).toLocaleString()}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </section>
 
           <section className="rounded-[12px] border border-slate-200 bg-white p-4">

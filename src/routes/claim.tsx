@@ -3,7 +3,13 @@ import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { Nav } from "@/components/landing/Nav";
 import { Footer } from "@/components/landing/Footer";
-import { submitClaim, trackClaim } from "@/lib/claims.functions";
+import {
+  recordEvidence,
+  requestEvidenceUploads,
+  submitClaim,
+  trackClaim,
+} from "@/lib/claims.functions";
+import { EVIDENCE_ACCEPT, filesFromForm, uploadEvidence, validateEvidence } from "@/lib/evidence";
 import {
   ISSUE_LABELS,
   ISSUE_TYPES,
@@ -81,6 +87,9 @@ function ClaimPage() {
 
 function ReportPanel() {
   const send = useServerFn(submitClaim);
+  const requestUploads = useServerFn(requestEvidenceUploads);
+  const recordUploads = useServerFn(recordEvidence);
+  const [uploadNote, setUploadNote] = useState<string | null>(null);
   const [reference, setReference] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -108,11 +117,34 @@ function ReportPanel() {
       setError("Please describe what happened in at least 10 characters.");
       return;
     }
+    const files = filesFromForm(form);
+    const fileProblem = validateEvidence(files);
+    if (fileProblem) {
+      setError(fileProblem);
+      return;
+    }
     setLoading(true);
     setError(null);
+    setUploadNote(null);
     try {
       const res = await send({ data: payload });
       setReference(res.reference);
+      if (files.length > 0) {
+        try {
+          const saved = await uploadEvidence({
+            reference: res.reference,
+            email: payload.email,
+            files,
+            requestUploads,
+            recordUploads,
+          });
+          setUploadNote(`${saved} file${saved === 1 ? "" : "s"} attached to your claim.`);
+        } catch {
+          setUploadNote(
+            "Your claim was saved, but your files didn't upload. Email them to us quoting your reference.",
+          );
+        }
+      }
     } catch {
       setError("We couldn't submit your claim. Please check the details and try again.");
     } finally {
@@ -137,6 +169,7 @@ function ReportPanel() {
           </p>
           <p className="mt-1 font-mono text-lg font-bold text-navy">{reference}</p>
         </div>
+        {uploadNote && <p className="mt-4 text-sm text-ink-soft">{uploadNote}</p>}
         <button
           onClick={() => setReference(null)}
           className="mt-6 rounded-[8px] border border-line px-5 py-2.5 text-sm font-semibold text-navy hover:bg-paper"
@@ -206,6 +239,14 @@ function ReportPanel() {
             rows={5}
             className={`resize-none ${fieldClass}`}
           />
+        </label>
+
+        <label className="block text-xs font-semibold text-ink">
+          Evidence (optional)
+          <input name="evidence" type="file" multiple accept={EVIDENCE_ACCEPT} className={fieldClass} />
+          <span className="mt-1 block text-[11px] font-normal text-ink-soft">
+            Photos, receipts or PDFs. Up to 5 files, 10 MB each.
+          </span>
         </label>
 
         {error && <p className="text-sm text-rose-600">{error}</p>}

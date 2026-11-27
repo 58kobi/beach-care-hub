@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { CloseIcon } from "./icons";
-import { submitClaim } from "@/lib/claims.functions";
+import { recordEvidence, requestEvidenceUploads, submitClaim } from "@/lib/claims.functions";
+import { EVIDENCE_ACCEPT, filesFromForm, uploadEvidence, validateEvidence } from "@/lib/evidence";
 import { ISSUE_LABELS, ISSUE_TYPES } from "@/lib/claims";
 
 const fieldClass =
@@ -9,6 +10,9 @@ const fieldClass =
 
 export function ReportIssueModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const send = useServerFn(submitClaim);
+  const requestUploads = useServerFn(requestEvidenceUploads);
+  const recordUploads = useServerFn(recordEvidence);
+  const [uploadNote, setUploadNote] = useState<string | null>(null);
   const [reference, setReference] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -38,11 +42,34 @@ export function ReportIssueModal({ open, onClose }: { open: boolean; onClose: ()
       setError("Please describe what happened in at least 10 characters.");
       return;
     }
+    const files = filesFromForm(form);
+    const fileProblem = validateEvidence(files);
+    if (fileProblem) {
+      setError(fileProblem);
+      return;
+    }
     setLoading(true);
     setError(null);
+    setUploadNote(null);
     try {
       const res = await send({ data: payload });
       setReference(res.reference);
+      if (files.length > 0) {
+        try {
+          const saved = await uploadEvidence({
+            reference: res.reference,
+            email: payload.email,
+            files,
+            requestUploads,
+            recordUploads,
+          });
+          setUploadNote(`${saved} file${saved === 1 ? "" : "s"} attached.`);
+        } catch {
+          setUploadNote(
+            "Your report was saved, but your files didn't upload. Email them to us quoting your reference.",
+          );
+        }
+      }
     } catch {
       setError("We couldn't submit your report. Please check the details and try again.");
     } finally {
@@ -82,6 +109,7 @@ export function ReportIssueModal({ open, onClose }: { open: boolean; onClose: ()
               safe — you can track progress any time at <span className="font-semibold">/track</span>
               .
             </p>
+            {uploadNote && <p className="mt-2">{uploadNote}</p>}
           </div>
         ) : (
           <>
@@ -152,6 +180,20 @@ export function ReportIssueModal({ open, onClose }: { open: boolean; onClose: ()
                   rows={4}
                   className={`mt-1.5 resize-none font-normal ${fieldClass}`}
                 />
+              </label>
+
+              <label className="block text-xs font-semibold text-ink">
+                Evidence (optional)
+                <input
+                  name="evidence"
+                  type="file"
+                  multiple
+                  accept={EVIDENCE_ACCEPT}
+                  className={`mt-1.5 font-normal ${fieldClass}`}
+                />
+                <span className="mt-1 block text-[11px] font-normal text-ink-soft">
+                  Photos, receipts or PDFs. Up to 5 files, 10 MB each.
+                </span>
               </label>
 
               {error && <p className="text-sm text-rose-600">{error}</p>}

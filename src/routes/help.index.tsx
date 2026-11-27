@@ -1,14 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell } from "@/components/landing/PageShell";
 import { ChevronRightIcon } from "@/components/landing/icons";
-import { ARTICLES } from "@/lib/articles";
+import { listArticles } from "@/lib/content.functions";
 import { SITE } from "@/lib/site";
 
 const title = "Help Centre — OnTheBeachCare";
 const description =
   "Guides and answers on filing a claim, tracking a refund, evidence to attach and what happens next.";
 
-export const Route = createFileRoute("/help")({
+export const Route = createFileRoute("/help/")({
   head: () => ({
     meta: [
       { title },
@@ -20,10 +20,12 @@ export const Route = createFileRoute("/help")({
     ],
     links: [{ rel: "canonical", href: "/help" }],
   }),
+  loader: () => listArticles(),
   component: HelpPage,
 });
 
 function HelpPage() {
+  const articles = Route.useLoaderData();
   return (
     <PageShell
       title="Help Centre"
@@ -51,8 +53,11 @@ function HelpPage() {
       </div>
 
       <h2 className="mt-10 font-display text-xl font-bold text-navy">All articles</h2>
+      {articles.length === 0 && (
+        <p className="mt-4 text-sm text-ink-soft">No articles are published yet.</p>
+      )}
       <ul className="mt-4 overflow-hidden rounded-[12px] border border-line">
-        {ARTICLES.map((a, i) => (
+        {articles.map((a, i) => (
           <li key={a.slug} className={i > 0 ? "border-t border-line" : ""}>
             <Link
               to="/help/$articleSlug"
