@@ -3,8 +3,6 @@ import bookingImg from "@/assets/issue-booking.jpg";
 import flightsImg from "@/assets/issue-flights.jpg";
 import refundsImg from "@/assets/issue-refunds.jpg";
 import resortImg from "@/assets/issue-resort.jpg";
-import beachAsset from "@/assets/beach1.jpeg.asset.json";
-import trashAsset from "@/assets/trash_on_the_beach.jpg.asset.json";
 
 const slides = [
   {
@@ -35,20 +33,8 @@ const slides = [
     img: refundsImg,
     alt: "Person reviewing booking paperwork and a phone",
   },
-  {
-    eyebrow: "At the beach",
-    title: "Beach Hazards & Safety",
-    desc: "Broken equipment, litter, or safety concerns on the sand.",
-    img: beachAsset.url,
-    alt: "Shoreline with palm trees and breaking waves",
-  },
-  {
-    eyebrow: "Environment",
-    title: "Litter & Shoreline Pollution",
-    desc: "Plastic bottles, waste and debris washed up along the shore.",
-    img: trashAsset.url,
-    alt: "Plastic bottle washed up in the surf on a beach",
-  },
+  // TODO: add back the "Beach Hazards & Safety" and "Litter & Shoreline Pollution"
+  // slides once their photos are saved in src/assets.
 ];
 
 function Chevron({ className, dir }: { className?: string; dir: "left" | "right" }) {

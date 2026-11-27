@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { MenuIcon } from "./icons";
-import logoAsset from "@/assets/logo-onthebeach.png.asset.json";
+import logoUrl from "@/assets/logo-onthebeach.png";
 import { SITE } from "@/lib/site";
 
 const tabs = [
@@ -19,10 +19,10 @@ export function Nav() {
         <div className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-3 py-3 sm:px-4">
           <Link to="/" className="flex min-w-0 items-center gap-3">
             <img
-              src={logoAsset.url}
+              src={logoUrl}
               alt="On the Beach"
               className="h-12 w-auto shrink-0 sm:h-16"
-              width={176}
+              width={117}
               height={64}
               fetchPriority="high"
             />
